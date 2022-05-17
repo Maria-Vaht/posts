@@ -124,40 +124,40 @@ class Api {
                 authorization: `Bearer ${this._token}`,
                 'Content-Type': 'application/json',
             },
-        body: JSON.stringify(comment),
-    }).then(onResponse)
-}
+            body: JSON.stringify(comment),
+        }).then(onResponse)
+    }
 
-deleteComments(postId, commentId){
-    return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
-        method: 'DELETE',
-        headers: {
-            authorization: `Bearer ${this._token}`,
+    deleteComments(postId, commentId) {
+        return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${this._token}`,
             },
 
-    }).onResponse()
+        }).onResponse()
 
-}
+    }
 
-signUp(userData){
-    return fetch(`${this._url}/signup`,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData),
-    }).then(onResponse)
+    signUp(userData) {
+        return fetch(`${this._newUrl}/api/signup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData),
+        }).then(onResponse)
 
-}
-signIn(userData){
-   return fetch(`${this._url}/signin`,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData),
-    }).then(onResponse)
-}
+    }
+    signIn(userData) {
+        return fetch(`${this._newUrl}/api/signin`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData),
+        }).then(onResponse)
+    }
 
 }
 
