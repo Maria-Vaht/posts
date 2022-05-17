@@ -1,18 +1,19 @@
 import React, { useState, useContext } from 'react'
-import api from '../../utils/api'
 import GlobalContext from '../../contexts/globalContext'
 import style from './style.module.css'
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Card, CardContent, CardMedia, CardActions, Typography, IconButton, CardHeader, Avatar } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import CommentIcon from '@mui/icons-material/Comment';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import EditIcon from '@mui/icons-material/Edit'
 import { Link } from 'react-router-dom'
+import { useApi } from '../../hooks/useApi'
 
 export const Post = ({ post }) => {
+    const api = useApi()
+
     const { title,
         image,
         text,
@@ -32,18 +33,6 @@ export const Post = ({ post }) => {
     const dayjs = require('dayjs')
     const dateParsedCreatedAt = dayjs(post['created_at']).format('DD-MM-YYYY HH:mm:ss')
 
-    // const writeLS = (key, value) => {
-    //     const storage = JSON.parse(localStorage.getItem(key)) || []
-    //     storage.push(value)
-    //     localStorage.setItem(key, JSON.stringify(storage))
-    // }
-
-    // const removeLS = (key, value) => {
-    //     const storage = JSON.parse(localStorage.getItem(key))
-    //     const filteredStorage = storage.filter((item) => item !== value)
-    //     localStorage.setItem(key, JSON.stringify(filteredStorage))
-    // }
-
     const addFavorite = () => {
         writeLS('favorites', post._id)
         setFavorites((prevState) => [...prevState, post._id])
@@ -51,12 +40,12 @@ export const Post = ({ post }) => {
         api.addLike(post._id)
             .then(() => {
                 setSnackBarState({
-                    isOpen: true, msg: 'Лайк поставлен :)'
+                    isOpen: true, msg: 'Лайк поставлен'
                 })
             })
             .catch(() => {
                 setSnackBarState({
-                    isOpen: true, msg: 'Не удалось поставить лайк :('
+                    isOpen: true, msg: 'Не удалось поставить лайк'
                 })
             });
     }
@@ -68,11 +57,11 @@ export const Post = ({ post }) => {
         api.deleteLike(post._id)
             .then(() => {
                 setSnackBarState({
-                    isOpen: true, msg: 'Лайк убран :)'
+                    isOpen: true, msg: 'Лайк убран'
                 })
                     .catch(() => {
                         setSnackBarState({
-                            isOpen: true, msg: 'Не удалось убрать лайк :('
+                            isOpen: true, msg: 'Не удалось убрать лайк'
                         })
                     })
             })
@@ -91,7 +80,7 @@ export const Post = ({ post }) => {
                     />
                     <CardMedia
                         component="img"
-                        height="140"
+                        height="300"
                         image={image}
                         alt="post"
                     />
@@ -100,19 +89,19 @@ export const Post = ({ post }) => {
                             {dateParsedCreatedAt}
                         </Typography>
                         <div className={style.title}>
-                            <Typography gutterBottom variant="h5" component="div">
+                            <Typography gutterBottom variant="h5" component="div" marginTop='20px'>
                                 <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
                                     {title}
                                 </Link>
                             </Typography>
                         </div>
-                        <div className={style.text}>
+                        {/* <div className={style.text}>
                             <Typography variant="body2" color="text.secondary">
                                 <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
                                     {text}
                                 </Link>
                             </Typography>
-                        </div>
+                        </div> */}
                         <div className={style.tagListContainer}>
                             {tags.map((tag, i) => <div key={i} className={style.tag}>{tag}</div>)}
                         </div>

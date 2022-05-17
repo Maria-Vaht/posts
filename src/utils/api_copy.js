@@ -1,4 +1,3 @@
-import { config } from './config'
 
 const onResponse = (res) => {
     return res.ok ? res.json() : Promise.reject(`Ошибка : ${res.status}`);
@@ -18,6 +17,28 @@ class Api {
         }).then(onResponse)
     }
 
+    editCurrentUser(updateUserInfo) {
+        return fetch(`${this._url}/users/me`, {
+            method : 'PATCH',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updateUserInfo),
+        }).then(onResponse);
+    }
+    
+    editAvatarUser(updateAvatar) {
+        return fetch(`${this._url}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updateAvatar),
+        }).then(onResponse);
+    }
+
     getPosts(postId) {
         const requestUrl = postId ? `${this._url}/posts/${postId}` : `${this._url}/posts`;
         return fetch(requestUrl, {
@@ -28,7 +49,7 @@ class Api {
     }
 
     createPost(title, text, image, tags) {
-        const tagList = tags.trim().split(/[,]\s*|\s+/g)
+        const tagList = tags.trim().split(/,\s*|\s+/g)
         return fetch(`${this._url}/posts`, {
             method: 'POST',
             headers: {
@@ -103,12 +124,40 @@ addComment(id, comment){
             'Content-Type': 'application/json',
             },
         body: JSON.stringify(comment),
-    }).then(res => res.json())
-    .catch(err => alert(err.message));
+    }).then(onResponse)
+}
+
+deleteComments(postId, commentId){
+    return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: `Bearer ${this._token}`,
+            },
+        
+    }).onResponse()
+
+}
+
+signUp(userData){
+    return fetch(`${this._url}/signup`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData),
+    }).then(onResponse)
+
+}
+signIn(userData){
+   return fetch(`${this._url}/signin`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData),
+    }).then(onResponse) 
 }
 
 }
 
-
-
-export default new Api(config)
+export default Api

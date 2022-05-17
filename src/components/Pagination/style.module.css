@@ -1,7 +1,6 @@
 .paginationContainer {
     display: flex;
     justify-content: center;
-    /* background-color: white; */
 }
 
 button {
@@ -10,6 +9,6 @@ button {
     margin: 3px;
     width: 30px;
     height: 30px;
-    border: none;
     cursor: pointer;
+    border: 1px solid gray
 }

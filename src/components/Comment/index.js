@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -12,12 +12,20 @@ import Typography from '@mui/material/Typography';
 
 import dayjs from 'dayjs';
 import GlobalContext from '../../contexts/globalContext';
+import { useApi } from '../../hooks/useApi';
 
 
 
 export const Comment = ({comment}) => {
-    const {currentUser} = useContext(GlobalContext);
-    const {comments, setComments} = useContext(GlobalContext);
+  
+    const {currentUser, comments, setComments} = useContext(GlobalContext);
+   const api = useApi()
+
+    const deleteComment = (commentId) => () => {
+      api.deleteComments(comment.post, commentId)
+      .then((data) => setComments(data))
+    };
+
 
 
   return (
@@ -48,14 +56,14 @@ export const Comment = ({comment}) => {
           />
          </ListItem>
          </Grid>
-         {/* <Grid item xs={1} >
+         <Grid item xs={1} >
          {currentUser._id == comment.author._id ? (
             <IconButton aria-label="delete"  onClick={deleteComment(comment._id)}>
             <DeleteIcon />
           </IconButton>
 
          ) : ('')}
-         </Grid> */}
+         </Grid>
          </Grid>
           <Divider variant="inset"  component="li" />
           </div>

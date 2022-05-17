@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import GlobalContext from '../../contexts/globalContext'
 import { Dialog, Button, TextField, DialogActions, DialogTitle, DialogContent } from '@mui/material'
-import api from '../../utils/api'
+import { useApi } from '../../hooks/useApi'
 
 export const FormDialog = () => {
+    const api = useApi()
     const { formDialogState: { postId, isOpen }, setFormDialogState, setPostList } = useContext(GlobalContext)
 
     const [title, setTitle] = useState('')
@@ -21,6 +22,11 @@ export const FormDialog = () => {
                     setTags(post?.tags.join(', '))
                 })
                 .catch(err => alert(err))
+        } else {
+            setTitle('')
+            setText('')
+            setImage('')
+            setTags('')
         }
     }, [postId]);
 

@@ -1,14 +1,14 @@
-.header {
+header {
 	width: 100%;
-	background-color: white;
-	height: 80px;
-	margin: 0;
+	background: url ('https://images.unsplash.com/photo-1651499171716-04dd57c5472e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
+	height: 150px;
+	margin: 20px;
 }
 
-.header__wrapper {
+/* .header__wrapper {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	margin: 10px;
 	gap: 100px;
 }
@@ -19,4 +19,4 @@
 		align-items: stretch;
 		gap: 20px;
 	}
-}
+}  */
