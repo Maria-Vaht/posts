@@ -1,0 +1,28 @@
+body {
+    background: 'https://trianglify.io/p/w:1440!h:900!x:RdYlBu!v:0.4!c:0.08!s:v3rb4!f:il!i:0.37';
+    font-family: 'Nunito', 'Arial', 'Helvetica', sans-serif;
+    margin: 0;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+.appContainer {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+} 
+
+.buttonMUI {
+    font-size: 5px;
+    width: 120px;
+    height: 40px;
+}

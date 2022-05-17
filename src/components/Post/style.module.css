@@ -1,0 +1,32 @@
+.tagListContainer {
+    display: flex;
+    height: 20px;
+}
+
+.tag {
+    background-color: rgb(238, 241, 28);
+    margin-right: 5px;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 15px;
+}
+
+.title {
+    line-height: 30px;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text {
+    margin-top: 5px;
+    line-height: 20px;
+    height: 80px;
+    line-height: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
