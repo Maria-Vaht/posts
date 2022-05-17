@@ -45,10 +45,16 @@ export const FormDialog = () => {
                 .then(() => handleClose())
                 .catch(err => alert(err))
         } else {
-            api.createPost(title, text, image, tags)
-                .then((newPost) => setPostList(prevState => [newPost, ...prevState]))
-                .then(() => handleClose())
-                .catch(err => alert(err))
+            if (!title) {
+                alert('Title can\'t be empty')
+            } else if (!text) {
+                alert('Text can\'t be empty')
+            } else {
+                api.createPost(title, text, image, tags)
+                    .then((newPost) => setPostList(prevState => [newPost, ...prevState]))
+                    .then(() => handleClose())
+                    .catch(err => alert(err))
+            }
         }
     };
 
