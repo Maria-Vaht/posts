@@ -5,9 +5,10 @@ const onResponse = (res) => {
 };
 
 class Api {
-    constructor({ url, token }) {
-        this._url = url;
-        this._token = token
+    constructor({ url, newUrl, token }) {
+        this._url = url,
+            this._newUrl = newUrl,
+            this._token = token
     }
 
     getCurrentUser() {
@@ -19,7 +20,7 @@ class Api {
     }
 
     getPosts(postId) {
-        const requestUrl = postId ? `${this._url}/posts/${postId}` : `${this._url}/posts`;
+        const requestUrl = postId ? `${this._newUrl}/api/post?id=${postId}` : `${this._newUrl}/api/posts`;
         return fetch(requestUrl, {
             headers: {
                 'authorization': `Bearer ${this._token}`
@@ -29,7 +30,7 @@ class Api {
 
     createPost(title, text, image, tags) {
         const tagList = tags.trim().split(/[,]\s*|\s+/g)
-        return fetch(`${this._url}/posts`, {
+        return fetch(`${this._newUrl}/api/post`, {
             method: 'POST',
             headers: {
                 'authorization': `Bearer ${this._token}`,
@@ -39,14 +40,14 @@ class Api {
                 'title': `${title}`,
                 'text': `${text}`,
                 'image': `${image}` || 'https://cdn.pixabay.com/photo/2015/10/06/19/28/trees-975091__480.jpg',
-                'tags': tagList,
+                'tags': tagList || [],
             })
         }).then(onResponse)
     }
 
     editPost(postId, title, text, image, tags) {
         const tagList = tags.trim().split(/[,]\s*|\s+/g)
-        return fetch(`${this._url}/posts/${postId}`, {
+        return fetch(`${this._newUrl}/api/post?id=${postId}`, {
             method: 'PATCH',
             headers: {
                 'authorization': `Bearer ${this._token}`,
@@ -87,25 +88,25 @@ class Api {
             }
         }).then(onResponse)
     }
-    getComments(id){
+    getComments(id) {
         return fetch(`${this._url}/posts/comments/${id}`, {
             headers: {
                 authorization: `Bearer ${this._token}`,
-                }
+            }
         }).then(onResponse)
-}
+    }
 
-addComment(id, comment){
-    return fetch(`${this._url}/posts/comments/${id}`, {
-        method: 'POST',
-        headers: {
-            authorization: `Bearer ${this._token}`,
-            'Content-Type': 'application/json',
+    addComment(id, comment) {
+        return fetch(`${this._url}/posts/comments/${id}`, {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                'Content-Type': 'application/json',
             },
-        body: JSON.stringify(comment),
-    }).then(res => res.json())
-    .catch(err => alert(err.message));
-}
+            body: JSON.stringify(comment),
+        }).then(res => res.json())
+            .catch(err => alert(err.message));
+    }
 
 }
 
