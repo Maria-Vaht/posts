@@ -1,12 +1,21 @@
-import React from "react";
-import './index.css'
+import React from 'react';
+import { AppBar, Container, Typography } from '@mui/material';
 
-const Footer = () => {
+export const Footer = () => {
   return (
-   <footer>
-      <p>&copy;2022</p>
-   </footer>
+    <AppBar 
+      component='footer'
+      position='static'
+      sx={{
+        height: '45px',
+        display: 'flex',
+        justifyContent: 'center'
+      }}
+    >
+      <Container fixed>
+        <Typography align='center'>&copy;2022</Typography>
+      </Container>
+    </AppBar>
   )
 }
 
-export default Footer

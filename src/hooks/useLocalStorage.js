@@ -1,6 +1,10 @@
 export const useLocalStorage = () => {
     const readLS = (key) => {
-        return JSON.parse(localStorage.getItem(key));
+        try {
+            return JSON.parse(localStorage.getItem(key));
+        } catch (error) {
+            return localStorage.getItem(key);
+        }
     };
 
     const writeLS = (key, value) => {

@@ -5,10 +5,12 @@ import { styled, Button, Typography } from '@mui/material'
 import style from './style.module.css'
 
 export const Pagination = () => {
-    const { postList, postsPerPage, setCurrentPage } = useContext(GlobalContext)
+    const { isTabLiked, isTabPostsCreated, postList, postListLiked, postListCreated, postsPerPage, setCurrentPage } = useContext(GlobalContext)
+    const list = isTabLiked ? postListLiked :
+        isTabPostsCreated ? postListCreated : postList
 
     const { items } = usePagination({
-        count: Math.ceil(postList?.length / postsPerPage),
+        count: Math.ceil(list?.length / postsPerPage),
         hidePrevButton: true,
         hideNextButton: true,
     });
@@ -41,18 +43,18 @@ export const Pagination = () => {
                             )
                         } else if (type === 'page') {
                             children = (
-                                <button 
-                                    {...item}
+                                <button
                                     style={{
                                         fontWeight: selected ? 'bold' : 'undefined',
                                     }}
+                                    {...item}
                                 >
                                     {page}
                                 </button>
                             );
                         } else {
                             children = (
-                                <button 
+                                <button
                                     {...item}>
                                     {type}
                                 </button>

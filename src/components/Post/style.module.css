@@ -1,6 +1,7 @@
 .tagListContainer {
     display: flex;
     height: 20px;
+    
 }
 
 .tag {
