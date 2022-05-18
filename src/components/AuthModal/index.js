@@ -38,12 +38,12 @@ export const AuthModal = () => {
     const signUp = () => {
         api.signUp({ email, password })
             .then((createdUser) => {
-                console.log(createdUser);
                 return api.signIn({ email, password });
             })
             .then((signedInUser) => {
                 const { token, data } = signedInUser
                 localStorage.setItem('token', JSON.stringify(token));
+                console.log(data)
                 setCurrentUser(data)
                 setAuthModal(() => {
                     return {

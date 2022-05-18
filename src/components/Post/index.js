@@ -95,13 +95,13 @@ export const Post = ({ post }) => {
                                 </Link>
                             </Typography>
                         </div>
-                        {/* <div className={style.text}>
+                        <div className={style.text}>
                             <Typography variant="body2" color="text.secondary">
                                 <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
                                     {text}
                                 </Link>
                             </Typography>
-                        </div> */}
+                        </div>
                         <div className={style.tagListContainer}>
                             {tags.map((tag, i) => <div key={i} className={style.tag}>{tag}</div>)}
                         </div>

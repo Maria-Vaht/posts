@@ -4,16 +4,15 @@ const onResponse = (res) => {
 };
 
 class Api {
-    constructor({ url, newUrl, token }) {
+    constructor({ url, token }) {
         this._url = url,
-            this._newUrl = newUrl,
             this._token = token
     }
 
     getCurrentUser() {
         return fetch(`${this._url}/users/me`, {
             headers: {
-                'authorization': `Bearer ${this._token}`
+                'authorization': `${this._token}`
             }
         }).then(onResponse)
     }
@@ -41,7 +40,7 @@ class Api {
     }
 
     getPosts(postId) {
-        const requestUrl = postId ? `${this._newUrl}/api/post?id=${postId}` : `${this._newUrl}/api/posts`;
+        const requestUrl = postId ? `${this._url}/post?id=${postId}` : `${this._url}/posts`;
         return fetch(requestUrl, {
             headers: {
                 'authorization': `Bearer ${this._token}`
@@ -51,7 +50,7 @@ class Api {
 
     createPost(title, text, image, tags) {
         const tagList = tags.trim().split(/,\s*|\s+/g)
-        return fetch(`${this._newUrl}/api/post`, {
+        return fetch(`${this._url}/post`, {
             method: 'POST',
             headers: {
                 'authorization': `Bearer ${this._token}`,
@@ -68,7 +67,7 @@ class Api {
 
     editPost(postId, title, text, image, tags) {
         const tagList = tags.trim().split(/[,]\s*|\s+/g)
-        return fetch(`${this._newUrl}/api/post?id=${postId}`, {
+        return fetch(`${this._url}/post?id=${postId}`, {
             method: 'PATCH',
             headers: {
                 'authorization': `Bearer ${this._token}`,
@@ -140,7 +139,7 @@ class Api {
     }
 
     signUp(userData) {
-        return fetch(`${this._newUrl}/api/signup`, {
+        return fetch(`${this._url}/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -150,7 +149,7 @@ class Api {
 
     }
     signIn(userData) {
-        return fetch(`${this._newUrl}/api/signin`, {
+        return fetch(`${this._url}/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -5,7 +5,7 @@ import { useApi } from '../../hooks/useApi'
 
 export const FormDialog = () => {
     const api = useApi()
-    const { formDialogState: { postId, isOpen }, setFormDialogState, setPostList } = useContext(GlobalContext)
+    const { formDialogState: { postId, isOpen }, setFormDialogState, setSnackBarState, setPostList } = useContext(GlobalContext)
 
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
@@ -46,9 +46,13 @@ export const FormDialog = () => {
                 .catch(err => alert(err))
         } else {
             if (!title) {
-                alert('Title can\'t be empty')
+                setSnackBarState({
+                    isOpen: true, msg: 'Title can\'t be empty'
+                })
             } else if (!text) {
-                alert('Text can\'t be empty')
+                setSnackBarState({
+                    isOpen: true, msg: 'Text can\'t be empty'
+                })
             } else {
                 api.createPost(title, text, image, tags)
                     .then((newPost) => setPostList(prevState => [newPost, ...prevState]))

@@ -4,10 +4,8 @@ import { useLocalStorage } from "./useLocalStorage";
 export const useApi = () => {
     const { readLS } = useLocalStorage()
 
-
     const config = {
-        url: 'https://api.react-learning.ru',
-        newUrl: 'https://mariavaht.pythonanywhere.com',
+        url: 'https://mariavaht.pythonanywhere.com/api',
         token: readLS("token")
     }
 
