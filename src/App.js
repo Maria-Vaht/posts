@@ -69,7 +69,6 @@ export const App = () => {
 
   const [authModal, setAuthModal] = useState({
     isOpen: false,
-    msg: null,
   });
 
   const sortFunctions = {
@@ -82,28 +81,14 @@ export const App = () => {
   useEffect(() => {
     api.getCurrentUser()
       .then((user) => setCurrentUser(user))
-      .then(api.getPosts().then(posts => {
-        setPostList(posts)
-      }))
-      .catch(() => setModalState(() => {
-        return {
-          isOpen: true,
-          msg: "Need to login"
-        }
-      }))
-  }, []);
-
-  useEffect(() => {
-    const token = readLS('token');
-    if (!token) {
-      setAuthModal(() => {
-        return {
-          isOpen: true,
-          msg: "Need authorization",
-        }
+      .catch(() => {
+        setAuthModal(() => {
+          return {
+            isOpen: true,
+          }
+        })
       })
-    }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (currentUser) {

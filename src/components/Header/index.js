@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Typography, Box, Avatar, Chip, Stack } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -18,16 +18,16 @@ export const Header = () => {
 
   const deleteUser = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('favorites');
     localStorage.removeItem('CurrentPage');
     navigate('/')
     setCurrentUser(null);
     setPostList(null);
     setAuthModal(() => {
       return {
-          isOpen: true,
-          msg: '',
+        isOpen: true,
       };
-  });
+    });
   };
 
   return (
@@ -42,29 +42,35 @@ export const Header = () => {
           }}>
 
             <Box component='div'>
-                <Logo />
-                </Box>
-                <Typography>
-                <Button className='buttonMUI' variant='contained' color='secondary' onClick={() => {
-              setFormDialogState({
-                isOpen: true,
-                postId: null,
-              })
-            }}>
-              New post
-            </Button>
+              <Logo />
+            </Box>
+            <Typography>
+              <Button className='buttonMUI' variant='contained' color='secondary' onClick={() => {
+                setFormDialogState({
+                  isOpen: true,
+                  postId: null,
+                })
+              }}>
+                New post
+              </Button>
             </Typography>
           </Box>
-         
+
           <Box component='div' sx={{
             display: 'flex',
             justifyContent: 'flex-end',
             flexGrow: 1
           }}>
           </Box>
-          <Stack direction="row" spacing={2}> 
-                      <Chip avatar={<Avatar alt="Avatar" src = {currentUser?.avatar} />}  label={currentUser?.name} onClick ={navigateToEditPage}  variant="outlined" size="medium" /> 
-                      <Chip icon={<LogoutIcon />}  label='Logout' onClick={deleteUser}   variant="outlined" />
+          <Stack direction="row" spacing={2}>
+            <Chip avatar={<Avatar alt="Avatar" src={currentUser?.avatar} />} label={currentUser?.name} onClick={navigateToEditPage} variant="outlined" size="medium" />
+            {currentUser ? (
+              <Chip icon={<LogoutIcon />} label='Logout' onClick={deleteUser} variant="outlined" />
+            ) : (
+              null
+            )
+            }
+
           </Stack>
         </Toolbar>
       </Container>

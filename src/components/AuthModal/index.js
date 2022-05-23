@@ -21,7 +21,7 @@ const style = {
 };
 
 export const AuthModal = () => {
-    const { setCurrentUser, setFormDialogState, setModalState } = useContext(GlobalContext)
+    const { setCurrentUser, setModalState } = useContext(GlobalContext)
     const api = useApi()
     const { authModal, setAuthModal } = useContext(GlobalContext)
     const [email, setEmail] = useState('');
@@ -43,12 +43,10 @@ export const AuthModal = () => {
             .then((signedInUser) => {
                 const { token, data } = signedInUser
                 localStorage.setItem('token', JSON.stringify(token));
-                console.log(data)
                 setCurrentUser(data)
                 setAuthModal(() => {
                     return {
                         isOpen: false,
-                        msg: null,
                     };
                 });
                 setEmail('');
@@ -68,12 +66,12 @@ export const AuthModal = () => {
         api.signIn({ email, password })
             .then((signedUser) => {
                 const { token, data } = signedUser;
+                setCurrentUser(data)
                 localStorage.setItem('token', JSON.stringify(token));
-                setCurrentUser(data);
+                localStorage.setItem('favorites', JSON.stringify(data['likes']));
                 setAuthModal(() => {
                     return {
                         isOpen: false,
-                        msg: null,
                     };
                 });
                 setEmail('');
@@ -83,7 +81,7 @@ export const AuthModal = () => {
                 setModalState(() => {
                     return {
                         isOpen: true,
-                        msg: 'LogIn Error',
+                        msg: 'Login Error',
                     };
                 });
 

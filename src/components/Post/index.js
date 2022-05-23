@@ -38,6 +38,7 @@ export const Post = ({ post }) => {
         setFavorites((prevState) => [...prevState, post._id])
         setFavoriteCounter((prevState) => prevState + 1)
         api.addLike(post._id)
+            .then(post => console.log(post['likes']))
             .then(() => {
                 setSnackBarState({
                     isOpen: true, msg: 'Лайк поставлен'

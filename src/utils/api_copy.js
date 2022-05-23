@@ -53,7 +53,7 @@ class Api {
         return fetch(`${this._url}/post`, {
             method: 'POST',
             headers: {
-                'authorization': `Bearer ${this._token}`,
+                'authorization': `${this._token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -83,19 +83,19 @@ class Api {
     }
 
     addLike(postId) {
-        return fetch(`${this._url}/posts/likes/${postId}`, {
+        return fetch(`${this._url}/likes/post?id=${postId}`, {
             method: 'PUT',
             headers: {
-                'authorization': `Bearer ${this._token}`,
+                'authorization': `${this._token}`,
             },
         }).then(onResponse);
     }
 
     deleteLike(postId) {
-        return fetch(`${this._url}/posts/likes/${postId}`, {
+        return fetch(`${this._url}/likes/post?id=${postId}`, {
             method: 'DELETE',
             headers: {
-                'authorization': `Bearer ${this._token}`,
+                'authorization': `${this._token}`,
             },
         }).then(onResponse);
     }
