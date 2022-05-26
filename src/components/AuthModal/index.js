@@ -1,12 +1,10 @@
 import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import GlobalContext from '../../contexts/globalContext';
 import { Grid, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { useApi } from '../../hooks/useApi';
-
-
+import { TabsPanel } from '../TabsPanel';
 
 const style = {
     position: 'absolute',
@@ -21,22 +19,17 @@ const style = {
 };
 
 export const AuthModal = () => {
-    const { setCurrentUser, setModalState } = useContext(GlobalContext)
+    const { setCurrentUser, setModalState, isTabSignUp } = useContext(GlobalContext)
     const api = useApi()
-    const { authModal, setAuthModal } = useContext(GlobalContext)
+    const { authModal, setAuthModal, setIsModal } = useContext(GlobalContext)
+    const [name, setName] = useState('');
+    const [about, setAbout] = useState('');
+    const [avatar, setAvatar] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleEmailChange = ({ target }) => {
-        setEmail(target.value);
-    };
-
-    const handlePasswordChange = ({ target }) => {
-        setPassword(target.value);
-    };
-
     const signUp = () => {
-        api.signUp({ email, password })
+        api.signUp({ name, about, avatar, email, password })
             .then((createdUser) => {
                 return api.signIn({ email, password });
             })
@@ -49,8 +42,12 @@ export const AuthModal = () => {
                         isOpen: false,
                     };
                 });
+                setName('');
+                setAbout('');
+                setAvatar('');
                 setEmail('');
                 setPassword('');
+                setIsModal(false)
             })
             .catch((err) => {
                 setModalState(() => {
@@ -76,6 +73,7 @@ export const AuthModal = () => {
                 });
                 setEmail('');
                 setPassword('');
+                setIsModal(false)
             })
             .catch((err) => {
                 setModalState(() => {
@@ -88,36 +86,48 @@ export const AuthModal = () => {
             });
     }
 
-
     return (
         <Modal open={authModal.isOpen} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
             <Box sx={style}>
+                <TabsPanel />
                 <Grid container spacing={3}>
+                    {isTabSignUp ? <>
+                        <Grid item xs={12}>
+                            <TextField fullwidth label='Name' variant='outlined' required value={name} onChange={({ target }) => setName(target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullwidth label='About' variant='outlined' required value={about} onChange={({ target }) => setAbout(target.value)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullwidth label='Avatar' variant='outlined' required value={avatar} onChange={({ target }) => setAvatar(target.value)} />
+                        </Grid>
+                    </> : null}
                     <Grid item xs={12}>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth label='Email' variant='outlined' required value={email} onChange={handleEmailChange} />
+                        <TextField fullwidth label='Email' variant='outlined' required value={email} onChange={({ target }) => setEmail(target.value)} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            fullWidth
+                            fullwidth
                             label='Password'
                             type='password'
                             variant='outlined'
                             required value={password}
-                            onChange={handlePasswordChange}
+                            onChange={({ target }) => setPassword(target.value)}
                         />
                     </Grid>
-                    <Grid item xs={6}>
-                        <Button onClick={signUp} fullWidth variant='contained' color='primary' size='small' >
-                            Registration
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button onClick={signIn} fullWidth variant='contained' color='primary' size='small' >
-                            Login
-                        </Button>
-                    </Grid>
+                    {isTabSignUp ? <>
+                        <Grid item xs={12}>
+                            <Button onClick={signUp} fullwidth variant='contained' color='primary' size='small' >
+                                Sign up
+                            </Button>
+                        </Grid>
+                    </> : <>
+                        <Grid item xs={12}>
+                            <Button onClick={signIn} fullwidth variant='contained' color='primary' size='small' >
+                                Sign in
+                            </Button>
+                        </Grid>
+                    </>}
                 </Grid>
             </Box>
         </Modal>
