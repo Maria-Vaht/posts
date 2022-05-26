@@ -159,7 +159,7 @@ export default function PostPage() {
                     </List>
                     <div>
                         <form onSubmit={handleComment}>
-                            <TextField fullWidth label='Add a comment' name='comment' variant='outlined' />
+                            <TextField fullwidth label='Add a comment' name='comment' variant='outlined' />
                             <Button className='buttonMUI' type='submit' variant='contained' style={{ marginBottom: '20px', marginRight: '15px', marginTop: '15px'}}>Send</Button>
                            
                         </form>

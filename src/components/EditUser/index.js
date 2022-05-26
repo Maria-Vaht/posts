@@ -55,7 +55,7 @@ export const EditUser = () => {
               </Grid>
               <Grid item>
                   <TextField
-                      fullWidth
+                      fullwidth
                       label='имя'
                       variant='outlined'
                       value={userName}
@@ -66,7 +66,7 @@ export const EditUser = () => {
               </Grid>
               <Grid item> 
                   <TextField
-                      fullWidth
+                      fullwidth
                       label='доп инфо'
                       variant='outlined'
                       value={userAbout}
@@ -78,7 +78,7 @@ export const EditUser = () => {
               </Grid>
               <Grid item>
                   <TextField
-                      fullWidth
+                      fullwidth
                       label='Ссылка на аватар'
                       variant='outlined'
                       value={userAvatar}

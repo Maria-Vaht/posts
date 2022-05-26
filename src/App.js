@@ -42,7 +42,10 @@ export const App = () => {
   const [comboBoxSelected, setComboBoxSelected] = useState('recent')
   const [isTabLiked, setIsTabLiked] = useState(false)
   const [isTabPostsCreated, setIsTabPostsCreated] = useState(false)
-  const [comments, setComments] = useState(null);
+  const [isTabSignIn, setIsTabSignIn] = useState(true)
+  const [isTabSignUp, setIsTabSignUp] = useState(false)
+  const [comments, setComments] = useState(null)
+  const [isModal, setIsModal] = useState(false)
   const postsPerPage = 12
   const dayjs = require('dayjs')
 
@@ -87,6 +90,7 @@ export const App = () => {
             isOpen: true,
           }
         })
+        setIsModal(true)
       })
   }, []);
 
@@ -146,7 +150,13 @@ export const App = () => {
         authModal,
         setAuthModal,
         sortFunctions,
-        setComments
+        setComments,
+        isModal,
+        setIsModal,
+        isTabSignUp,
+        setIsTabSignUp,
+        isTabSignIn,
+        setIsTabSignIn,
       }}>
         <div className='appContainer'>
           <Header>

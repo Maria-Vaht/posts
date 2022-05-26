@@ -14,7 +14,7 @@ export const Header = () => {
   const navigateToEditPage = () => {
     navigate('currentUser/edit');
   }
-  const { currentUser, setCurrentUser, setAuthModal, setFormDialogState, setModalState, setPostList } = useContext(GlobalContext);
+  const { currentUser, setCurrentUser, setAuthModal, setFormDialogState, setModalState, setPostList, setIsModal } = useContext(GlobalContext);
 
   const deleteUser = () => {
     localStorage.removeItem('token');
@@ -28,6 +28,7 @@ export const Header = () => {
         isOpen: true,
       };
     });
+    setIsModal(true)
   };
 
   return (
