@@ -7,13 +7,12 @@ import { Button } from '@mui/material';
 import Logo from "../Logo"
 
 
-
-
 export const Header = () => {
   const navigate = useNavigate();
   const navigateToEditPage = () => {
-    navigate('currentUser/edit');
+    navigate('current-user/edit');
   }
+
   const { currentUser, setCurrentUser, setAuthModal, setFormDialogState, setModalState, setPostList, setIsModal } = useContext(GlobalContext);
 
   const deleteUser = () => {

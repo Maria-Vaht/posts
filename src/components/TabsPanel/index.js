@@ -40,9 +40,9 @@ export const TabsPanel = () => {
     };
 
     return (
-        <div className={style.tabsPanel}>
-            <Tabs value={value} onChange={handleChange}>
-                {isModal ? <div>
+        isModal ? (
+            <div className={style.tabsPanel}>
+                <Tabs value={value} onChange={handleChange}>
                     <Tab onClick={() => {
                         setIsTabSignIn(true)
                         setIsTabSignUp(false)
@@ -53,7 +53,10 @@ export const TabsPanel = () => {
                         setIsTabSignIn(false)
                     }}
                         label="Sign up" />
-                </div> : <div>
+                </Tabs>
+            </div>) : (
+            <div className={style.tabsPanel}>
+                <Tabs value={value} onChange={handleChange}>
                     <Tab onClick={() => {
                         setIsTabLiked(false)
                         setIsTabPostsCreated(false)
@@ -67,10 +70,7 @@ export const TabsPanel = () => {
                         setIsTabLiked(true)
                         setIsTabPostsCreated(false)
                     }} label="You liked" />
-                </div>}
-
-            </Tabs>
-        </div >
-
+                </Tabs>
+            </div>)
     )
 }
