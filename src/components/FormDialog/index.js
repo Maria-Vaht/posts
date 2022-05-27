@@ -71,7 +71,7 @@ export const FormDialog = () => {
                         autoFocus
                         margin="dense"
                         label="Title"
-                        fullwidth
+                        fullWidth
                         variant="standard"
                         value={title}
                         onChange={({ target }) => {
@@ -81,7 +81,7 @@ export const FormDialog = () => {
                     <TextField
                         margin="dense"
                         label="Text"
-                        fullwidth
+                        fullWidth
                         variant="standard"
                         value={text}
                         onChange={({ target }) => {
@@ -91,7 +91,7 @@ export const FormDialog = () => {
                     <TextField
                         margin="dense"
                         label="Image"
-                        fullwidth
+                        fullWidth
                         variant="standard"
                         value={image}
                         onChange={({ target }) => {
@@ -101,7 +101,7 @@ export const FormDialog = () => {
                     <TextField
                         margin="dense"
                         label="Tags"
-                        fullwidth
+                        fullWidth
                         variant="standard"
                         value={tags}
                         onChange={({ target }) => {

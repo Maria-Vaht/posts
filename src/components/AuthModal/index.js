@@ -8,7 +8,7 @@ import { TabsPanel } from '../TabsPanel';
 
 const style = {
     position: 'absolute',
-    top: '50%',
+    top: '45%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
@@ -29,7 +29,7 @@ export const AuthModal = () => {
     const [password, setPassword] = useState('');
 
     const signUp = () => {
-        api.signUp({ name, about, avatar, email, password })
+        api.signUp({name, about, avatar, email, password})
             .then((createdUser) => {
                 return api.signIn({ email, password });
             })
@@ -90,24 +90,24 @@ export const AuthModal = () => {
         <Modal open={authModal.isOpen} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
             <Box sx={style}>
                 <TabsPanel />
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
                     {isTabSignUp ? <>
                         <Grid item xs={12}>
-                            <TextField fullwidth label='Name' variant='outlined' required value={name} onChange={({ target }) => setName(target.value)} />
+                            <TextField fullWidth label='Name' variant='outlined' required value={name} onChange={({ target }) => setName(target.value)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField fullwidth label='About' variant='outlined' required value={about} onChange={({ target }) => setAbout(target.value)} />
+                            <TextField fullWidth label='About' variant='outlined' required value={about} onChange={({ target }) => setAbout(target.value)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField fullwidth label='Avatar' variant='outlined' required value={avatar} onChange={({ target }) => setAvatar(target.value)} />
+                            <TextField fullWidth label='Avatar URL' variant='outlined' required value={avatar} onChange={({ target }) => setAvatar(target.value)} />
                         </Grid>
                     </> : null}
                     <Grid item xs={12}>
-                        <TextField fullwidth label='Email' variant='outlined' required value={email} onChange={({ target }) => setEmail(target.value)} />
+                        <TextField fullWidth label='Email' variant='outlined' required value={email} onChange={({ target }) => setEmail(target.value)} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            fullwidth
+                            fullWidth
                             label='Password'
                             type='password'
                             variant='outlined'
@@ -117,19 +117,19 @@ export const AuthModal = () => {
                     </Grid>
                     {isTabSignUp ? <>
                         <Grid item xs={12}>
-                            <Button onClick={signUp} fullwidth variant='contained' color='primary' size='small' >
+                            <Button onClick={signUp} fullWidth variant='contained' color='primary' size='small' >
                                 Sign up
                             </Button>
                         </Grid>
                     </> : <>
                         <Grid item xs={12}>
-                            <Button onClick={signIn} fullwidth variant='contained' color='primary' size='small' >
+                            <Button onClick={signIn} fullWidth variant='contained' color='primary' size='small' >
                                 Sign in
                             </Button>
                         </Grid>
                     </>}
                 </Grid>
             </Box>
-        </Modal>
+        </Modal >
     );
 };

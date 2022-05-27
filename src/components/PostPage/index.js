@@ -15,7 +15,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import { IconButton, Input, TextField } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Container } from '@mui/material';
-import { Navigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Comment } from '../Comment';
 import { List } from '@mui/material';
@@ -24,7 +23,7 @@ import { useApi } from '../../hooks/useApi';
 
 
 export default function PostPage() {
-    
+
 
     const api = useApi()
     const { writeLS, removeLS } = useLocalStorage();
@@ -80,21 +79,21 @@ export default function PostPage() {
     const handleComment = (event) => {
         event.preventDefault();
         const {
-            target: {comment},
+            target: { comment },
         } = event;
-       
-       api.addComment(postItem._id, {text: comment.value}).
-       then(() => api.getComments(params.postID)).
-       then((data) => setComments(data));
-       event.target.comment.value = '';
-     
+
+        api.addComment(postItem._id, { text: comment.value }).
+            then(() => api.getComments(params.postID)).
+            then((data) => setComments(data));
+        event.target.comment.value = '';
+
     };
 
 
- return (
+    return (
         <Container>
             <div>
-                <Button className='buttonMUI' variant="contained" style={{ marginTop: '10px', marginLeft: "30%"}} onClick={() => navigate('/')} > Homepage </Button>
+                <Button className='buttonMUI' variant="contained" style={{ marginTop: '10px', marginLeft: "30%" }} onClick={() => navigate('/')} > Homepage </Button>
             </div>
             <Card sx={{ maxWidth: 500 }} style={{ marginTop: "20px", marginLeft: "30%", padding: "20px", position: "center", }}>
                 <CardMedia
@@ -159,9 +158,9 @@ export default function PostPage() {
                     </List>
                     <div>
                         <form onSubmit={handleComment}>
-                            <TextField fullwidth label='Add a comment' name='comment' variant='outlined' />
-                            <Button className='buttonMUI' type='submit' variant='contained' style={{ marginBottom: '20px', marginRight: '15px', marginTop: '15px'}}>Send</Button>
-                           
+                            <TextField fullWidth label='Add a comment' name='comment' variant='outlined' />
+                            <Button className='buttonMUI' type='submit' variant='contained' style={{ marginBottom: '20px', marginRight: '15px', marginTop: '15px' }}>Send</Button>
+
                         </form>
                     </div>
                 </CardContent>

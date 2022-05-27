@@ -17,25 +17,14 @@ class Api {
         }).then(onResponse)
     }
 
-    editCurrentUser(updateUserInfo) {
+    editCurrentUser(editedUser) {
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: {
-                authorization: `Bearer ${this._token}`,
+                authorization: `${this._token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(updateUserInfo),
-        }).then(onResponse);
-    }
-
-    editAvatarUser(updateAvatar) {
-        return fetch(`${this._url}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${this._token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updateAvatar),
+            body: JSON.stringify(editedUser),
         }).then(onResponse);
     }
 
@@ -59,7 +48,7 @@ class Api {
             body: JSON.stringify({
                 'title': `${title}`,
                 'text': `${text}`,
-                'image': `${image}` || 'https://cdn.pixabay.com/photo/2015/10/06/19/28/trees-975091__480.jpg',
+                'image': `${image}` || 'https://avatanplus.com/files/resources/original/5a698981709f81612c4121b5.jpg',
                 'tags': tagList || [],
             })
         }).then(onResponse)
@@ -82,6 +71,15 @@ class Api {
         }).then(onResponse)
     }
 
+    deletePostById(postId) {
+        return fetch(`${this._url}/post?id=${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'authorization': `${this._token}`
+            }
+        }).then(onResponse)
+    }
+
     addLike(postId) {
         return fetch(`${this._url}/likes/post?id=${postId}`, {
             method: 'PUT',
@@ -100,14 +98,6 @@ class Api {
         }).then(onResponse);
     }
 
-    deletePostById(id) {
-        return fetch(`${this._url}/posts/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'authorization': `Bearer ${this._token}`
-            }
-        }).then(onResponse)
-    }
     getComments(id) {
         return fetch(`${this._url}/posts/comments/${id}`, {
             headers: {

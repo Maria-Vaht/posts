@@ -159,22 +159,22 @@ export const App = () => {
         setIsTabSignIn,
       }}>
         <div className='appContainer'>
-          <Header>
-            <ComboBox />
-          </Header>
+          <Header />
           <Routes>
             <Route path="/"
               element={<>
-                <TabsPanel />
+                {isModal ?
+                  null : (
+                    <TabsPanel />
+                  )}
                 <ComboBox />
-
                 <PostList />
                 <Pagination />
               </>
               }
             />
             <Route path="post/:postID" element={<PostPage />} />
-            <Route path='currentUser/edit' element={<EditUser />} />
+            <Route path='current-user/edit' element={<EditUser />} />
           </Routes>
           <FormDialog />
           <ConfirmDialog />
