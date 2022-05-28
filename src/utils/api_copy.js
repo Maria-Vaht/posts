@@ -59,13 +59,13 @@ class Api {
         return fetch(`${this._url}/post?id=${postId}`, {
             method: 'PATCH',
             headers: {
-                'authorization': `Bearer ${this._token}`,
+                'authorization': `${this._token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 'title': `${title}`,
                 'text': `${text}`,
-                'image': `${image}` || 'https://cdn.pixabay.com/photo/2015/10/06/19/28/trees-975091__480.jpg',
+                'image': `${image}`,
                 'tags': tagList,
             }),
         }).then(onResponse)
@@ -125,16 +125,16 @@ addComment(id, comment){
         }).then(onResponse)
     }
 
-    deleteComments(postId, commentId) {
-        return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${this._token}`,
-            },
+    // deleteComments(postId, commentId) {
+    //     return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             authorization: `Bearer ${this._token}`,
+    //         },
 
-        }).onResponse()
+    //     }).onResponse()
 
-    }
+    // }
 
     signUp(userData) {
         return fetch(`${this._url}/signup`, {

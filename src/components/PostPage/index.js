@@ -34,46 +34,39 @@ export default function PostPage() {
     const navigate = useNavigate()
     const [comments, setComments] = useState(null);
 
+    const showErrorMessage = () => {
+        setModalState(() => {
+            return {
+                isOpen: true,
+                msg: 'Unexpected error occurred. Please try again later',
+            };
+        });
+    }
+
     const addFavorite = () => {
         writeLS('favorites', postItem._id)
         setFavorites((prevState) => [...prevState, postItem._id])
         api.addLike(postItem._id)
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк поставлен'
-                })
-            })
-            .catch(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Не удалось поставить лайк'
-                })
-            });
+            .then(post => post)
+            .catch(showErrorMessage);
     }
 
     const removeFavorite = () => {
         removeLS('favorites', postItem._id)
         setFavorites((prevState) => prevState.filter((postId) => postId !== postItem._id))
         api.deleteLike(postItem._id)
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк убран'
-                })
-                    .catch(() => {
-                        setSnackBarState({
-                            isOpen: true, msg: 'Не удалось убрать лайк'
-                        })
-                    })
-            })
+            .then(post => post)
+            .catch(showErrorMessage);
     }
 
     useEffect(() => {
         api.getPosts(params.postID)
             .then((data) => setPostItem(data))
-            .catch((err) => console.log('error'));
+            .catch(showErrorMessage);
 
         api.getComments(params.postID)
             .then((data) => setComments(data))
-            .catch((err) => console.log('error'))
+            .catch(showErrorMessage);
     }, [comments])
 
     const handleComment = (event) => {

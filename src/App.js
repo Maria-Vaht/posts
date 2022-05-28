@@ -100,8 +100,8 @@ export const App = () => {
         .catch(() => setModalState(() => {
           return {
             isOpen: true,
-            msg: "Unexpected error"
-          }
+            msg: 'Unexpected error occurred. Please try again later',
+          };
         }))
     }
   }, [comboBoxSelected, currentUser]);

@@ -26,8 +26,6 @@ export const Comment = ({comment}) => {
       .then((data) => setComments(data))
     };
 
-
-
   return (
     <div>
         
