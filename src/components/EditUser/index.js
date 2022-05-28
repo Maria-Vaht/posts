@@ -22,7 +22,12 @@ export const EditUser = () => {
             .then((data) => {
                 setCurrentUser(data)
             })
-            .catch((err) => alert(err))
+            .catch(() => setModalState(() => {
+                return {
+                    isOpen: true,
+                    msg: 'Unexpected error occurred. Please try again later',
+                };
+            }))
         navigate('/')
     }
 

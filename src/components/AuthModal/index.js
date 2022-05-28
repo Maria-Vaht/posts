@@ -6,18 +6,6 @@ import { Grid, Button, FormControl, IconButton, InputAdornment, InputLabel, Outl
 import { useApi } from '../../hooks/useApi';
 import { TabsPanel } from '../TabsPanel';
 
-const style = {
-    position: 'absolute',
-    top: '45%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
 export const AuthModal = () => {
     const { setCurrentUser, setModalState, isTabSignUp, setIsTabSignUp, setSnackBarState } = useContext(GlobalContext)
     const api = useApi()
@@ -27,6 +15,32 @@ export const AuthModal = () => {
     const [avatar, setAvatar] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const style = {
+        position: 'absolute',
+        top: '45%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+    const showErrorMessage = () => {
+        setModalState(() => {
+            return {
+                isOpen: true,
+                msg: 'Unexpected error occurred. Please try again later',
+            };
+        });
+    }
+
+    const salt = 'P8SwsDcrSCg5d93Ei56RqJ13Afde9'
+    const hash = require('object-hash')
+
+    const generateHash = (str) => hash(str)
 
     const isEmpty = () => {
         if (isTabSignUp) {
@@ -54,16 +68,31 @@ export const AuthModal = () => {
 
     const signUp = () => {
         if (!isEmpty()) {
-            api.signUp({ name, about, avatar, email, password })
-                .then(() => signIn())
+            const emailPasswordSaltHash = generateHash(email.concat(password, salt))
+            api.signUp({ name, about, avatar, email, emailPasswordSaltHash })
+                .then((res) => {
+                    if ('error' in res) {
+                        return setSnackBarState({
+                            isOpen: true, msg: res['error']
+                        })
+                    }
+                    signIn()
+                })
+                .catch(showErrorMessage);
         }
-    };
+    }
 
     const signIn = () => {
         if (!isEmpty()) {
-            api.signIn({ email, password })
-                .then((signedUser) => {
-                    const { token, data } = signedUser;
+            const emailPasswordSaltHash = generateHash(email.concat(password, salt))
+            api.signIn({ emailPasswordSaltHash })
+                .then((res) => {
+                    if ('error' in res) {
+                        return setSnackBarState({
+                            isOpen: true, msg: res['error']
+                        })
+                    }
+                    const { token, data } = res;
                     setCurrentUser(data)
                     localStorage.setItem('token', JSON.stringify(token));
                     localStorage.setItem('favorites', JSON.stringify(data['likes']));
@@ -80,14 +109,7 @@ export const AuthModal = () => {
                     setIsTabSignUp(false)
                     setIsModal(false)
                 })
-                .catch((err) => {
-                    setModalState(() => {
-                        return {
-                            isOpen: true,
-                            msg: 'Login Error',
-                        };
-                    });
-                });
+                .catch(showErrorMessage);
         }
 
     }

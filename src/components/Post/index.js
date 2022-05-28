@@ -33,22 +33,22 @@ export const Post = ({ post }) => {
     const dayjs = require('dayjs')
     const dateParsedCreatedAt = dayjs(post['created_at']).format('DD-MM-YYYY HH:mm:ss')
 
+    const showErrorMessage = () => {
+        setModalState(() => {
+            return {
+                isOpen: true,
+                msg: 'Unexpected error occurred. Please try again later',
+            };
+        });
+    }
+
     const addFavorite = () => {
         writeLS('favorites', post._id)
         setFavorites((prevState) => [...prevState, post._id])
         setFavoriteCounter((prevState) => prevState + 1)
         api.addLike(post._id)
-            .then(post => console.log(post['likes']))
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк поставлен'
-                })
-            })
-            .catch(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Не удалось поставить лайк'
-                })
-            });
+            .then(post => post)
+            .catch(showErrorMessage);
     }
 
     const removeFavorite = () => {
@@ -56,16 +56,8 @@ export const Post = ({ post }) => {
         setFavorites((prevState) => prevState.filter((postId) => postId !== post._id))
         setFavoriteCounter((prevState) => prevState - 1)
         api.deleteLike(post._id)
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк убран'
-                })
-                    .catch(() => {
-                        setSnackBarState({
-                            isOpen: true, msg: 'Не удалось убрать лайк'
-                        })
-                    })
-            })
+            .then(post => post)
+            .catch(showErrorMessage)
     }
 
     return (
@@ -79,30 +71,30 @@ export const Post = ({ post }) => {
                         title={name}
                         subheader={about}
                     />
-                    <CardMedia
-                        component="img"
-                        height="300"
-                        image={image}
-                        alt="post"
-                    />
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
+                        <CardMedia
+                            component="img"
+                            height="300"
+                            image={image}
+                            alt="post"
+                        />
+                    </Link>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
                             {dateParsedCreatedAt}
                         </Typography>
-                        <div className={style.title}>
-                            <Typography gutterBottom variant="h5" component="div" marginTop='20px'>
-                                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
+                        <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
+                            <div className={style.title}>
+                                <Typography gutterBottom variant="h5" component="div" marginTop='20px'>
                                     {title}
-                                </Link>
-                            </Typography>
-                        </div>
-                        <div className={style.text}>
-                            <Typography variant="body2" color="text.secondary">
-                                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`post/${post._id}`}>
+                                </Typography>
+                            </div>
+                            <div className={style.text}>
+                                <Typography variant="body2" color="text.secondary">
                                     {text}
-                                </Link>
-                            </Typography>
-                        </div>
+                                </Typography>
+                            </div>
+                        </Link>
                         <div className={style.tagListContainer}>
                             {tags.map((tag, i) => <div key={i} className={style.tag}>{tag}</div>)}
                         </div>
