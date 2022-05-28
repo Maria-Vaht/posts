@@ -42,7 +42,6 @@ export const App = () => {
   const [comboBoxSelected, setComboBoxSelected] = useState('recent')
   const [isTabLiked, setIsTabLiked] = useState(false)
   const [isTabPostsCreated, setIsTabPostsCreated] = useState(false)
-  const [isTabSignIn, setIsTabSignIn] = useState(true)
   const [isTabSignUp, setIsTabSignUp] = useState(false)
   const [comments, setComments] = useState(null)
   const [isModal, setIsModal] = useState(false)
@@ -155,8 +154,6 @@ export const App = () => {
         setIsModal,
         isTabSignUp,
         setIsTabSignUp,
-        isTabSignIn,
-        setIsTabSignIn,
       }}>
         <div className='appContainer'>
           <Header />

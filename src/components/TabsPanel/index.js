@@ -5,7 +5,7 @@ import style from './style.module.css'
 import GlobalContext from '../../contexts/globalContext'
 
 export const TabsPanel = () => {
-    const { setIsTabLiked, setIsTabPostsCreated, isModal, setIsTabSignUp, setIsTabSignIn } = useContext(GlobalContext)
+    const { setIsTabLiked, setIsTabPostsCreated, isModal, setIsTabSignUp } = useContext(GlobalContext)
 
     const [value, setValue] = React.useState(0);
 
@@ -44,13 +44,11 @@ export const TabsPanel = () => {
             <div className={style.tabsPanel}>
                 <Tabs value={value} onChange={handleChange}>
                     <Tab onClick={() => {
-                        setIsTabSignIn(true)
                         setIsTabSignUp(false)
                     }}
                         label="Sign in" />
                     <Tab onClick={() => {
                         setIsTabSignUp(true)
-                        setIsTabSignIn(false)
                     }}
                         label="Sign up" />
                 </Tabs>
