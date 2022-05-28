@@ -38,7 +38,7 @@ export const FormDialog = () => {
             }
         })
     }
-
+    
     const handleSubmit = () => {
         if (postId) {
             api.editPost(postId, title, text, image, tags)

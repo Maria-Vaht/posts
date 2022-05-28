@@ -19,7 +19,7 @@ const style = {
 };
 
 export const AuthModal = () => {
-    const { setCurrentUser, setModalState, isTabSignUp } = useContext(GlobalContext)
+    const { setCurrentUser, setModalState, isTabSignUp, setIsTabSignUp, setSnackBarState } = useContext(GlobalContext)
     const api = useApi()
     const { authModal, setAuthModal, setIsModal } = useContext(GlobalContext)
     const [name, setName] = useState('');
@@ -28,62 +28,68 @@ export const AuthModal = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const isEmpty = () => {
+        if (isTabSignUp) {
+            if (!name) {
+                setSnackBarState({
+                    isOpen: true, msg: 'Name can\'t be empty'
+                })
+                return true
+            }
+        }
+        if (!email) {
+            setSnackBarState({
+                isOpen: true, msg: 'Email can\'t be empty'
+            })
+            return true
+        } else if (!password) {
+            setSnackBarState({
+                isOpen: true, msg: 'Password can\'t be empty'
+            })
+            return true
+        } else {
+            return false
+        }
+    }
+
     const signUp = () => {
-        api.signUp({name, about, avatar, email, password})
-            .then((createdUser) => {
-                return api.signIn({ email, password });
-            })
-            .then((signedInUser) => {
-                const { token, data } = signedInUser
-                localStorage.setItem('token', JSON.stringify(token));
-                setCurrentUser(data)
-                setAuthModal(() => {
-                    return {
-                        isOpen: false,
-                    };
-                });
-                setName('');
-                setAbout('');
-                setAvatar('');
-                setEmail('');
-                setPassword('');
-                setIsModal(false)
-            })
-            .catch((err) => {
-                setModalState(() => {
-                    return {
-                        isOpen: true,
-                        msg: 'Authorization error',
-                    };
-                });
-            });
+        if (!isEmpty()) {
+            api.signUp({ name, about, avatar, email, password })
+                .then(() => signIn())
+        }
     };
 
     const signIn = () => {
-        api.signIn({ email, password })
-            .then((signedUser) => {
-                const { token, data } = signedUser;
-                setCurrentUser(data)
-                localStorage.setItem('token', JSON.stringify(token));
-                localStorage.setItem('favorites', JSON.stringify(data['likes']));
-                setAuthModal(() => {
-                    return {
-                        isOpen: false,
-                    };
+        if (!isEmpty()) {
+            api.signIn({ email, password })
+                .then((signedUser) => {
+                    const { token, data } = signedUser;
+                    setCurrentUser(data)
+                    localStorage.setItem('token', JSON.stringify(token));
+                    localStorage.setItem('favorites', JSON.stringify(data['likes']));
+                    setAuthModal(() => {
+                        return {
+                            isOpen: false,
+                        };
+                    });
+                    setName('');
+                    setAbout('');
+                    setAvatar('');
+                    setEmail('');
+                    setPassword('');
+                    setIsTabSignUp(false)
+                    setIsModal(false)
+                })
+                .catch((err) => {
+                    setModalState(() => {
+                        return {
+                            isOpen: true,
+                            msg: 'Login Error',
+                        };
+                    });
                 });
-                setEmail('');
-                setPassword('');
-                setIsModal(false)
-            })
-            .catch((err) => {
-                setModalState(() => {
-                    return {
-                        isOpen: true,
-                        msg: 'Login Error',
-                    };
-                });
+        }
 
-            });
     }
 
     return (
