@@ -43,7 +43,6 @@ export const App = () => {
   const [isTabLiked, setIsTabLiked] = useState(false)
   const [isTabPostsCreated, setIsTabPostsCreated] = useState(false)
   const [isTabSignUp, setIsTabSignUp] = useState(false)
-  const [comments, setComments] = useState(null)
   const [isModal, setIsModal] = useState(false)
   const postsPerPage = 12
   const dayjs = require('dayjs')
@@ -149,7 +148,6 @@ export const App = () => {
         authModal,
         setAuthModal,
         sortFunctions,
-        setComments,
         isModal,
         setIsModal,
         isTabSignUp,

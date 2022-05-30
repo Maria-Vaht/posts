@@ -29,7 +29,7 @@ class Api {
     }
 
     getPosts(postId) {
-        const requestUrl = postId ? `${this._url}/post?id=${postId}` : `${this._url}/posts`;
+        const requestUrl = postId ? `${this._url}/post?post_id=${postId}` : `${this._url}/posts`;
         return fetch(requestUrl, {
             headers: {
                 'authorization': `Bearer ${this._token}`
@@ -56,7 +56,7 @@ class Api {
 
     editPost(postId, title, text, image, tags) {
         const tagList = tags.trim().split(/[,]\s*|\s+/g)
-        return fetch(`${this._url}/post?id=${postId}`, {
+        return fetch(`${this._url}/post?post_id=${postId}`, {
             method: 'PATCH',
             headers: {
                 'authorization': `${this._token}`,
@@ -72,7 +72,7 @@ class Api {
     }
 
     deletePostById(postId) {
-        return fetch(`${this._url}/post?id=${postId}`, {
+        return fetch(`${this._url}/post?post_id=${postId}`, {
             method: 'DELETE',
             headers: {
                 'authorization': `${this._token}`
@@ -81,7 +81,7 @@ class Api {
     }
 
     addLike(postId) {
-        return fetch(`${this._url}/likes/post?id=${postId}`, {
+        return fetch(`${this._url}/likes/post?post_id=${postId}`, {
             method: 'PUT',
             headers: {
                 'authorization': `${this._token}`,
@@ -90,7 +90,7 @@ class Api {
     }
 
     deleteLike(postId) {
-        return fetch(`${this._url}/likes/post?id=${postId}`, {
+        return fetch(`${this._url}/likes/post?post_id=${postId}`, {
             method: 'DELETE',
             headers: {
                 'authorization': `${this._token}`,
@@ -98,16 +98,17 @@ class Api {
         }).then(onResponse);
     }
 
-    deletePostById(id) {
-        return fetch(`${this._url}/posts/${id}`, {
-            method: 'DELETE',
+    getComments(postId) {
+        return fetch(`${this._url}/comments/post?post_id=${postId}`, {
             headers: {
                 'authorization': `Bearer ${this._token}`
             }
         }).then(onResponse)
     }
-    getComments(id){
-        return fetch(`${this._url}/posts/comments/${id}`, {
+
+    addComment(postId, comment) {
+        return fetch(`${this._url}/comments/post?post_id=${postId}`, {
+            method: 'POST',
             headers: {
                 authorization: `Bearer ${this._token}`,
                 }
@@ -125,16 +126,38 @@ addComment(id, comment){
         }).then(onResponse)
     }
 
-    // deleteComments(postId, commentId) {
-    //     return fetch(`${this._url}/posts/comments/${postId}/${commentId}`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             authorization: `Bearer ${this._token}`,
-    //         },
+    deleteComment(postId, commentId) {
+        return fetch(`${this._url}/comments/post?post_id=${postId}&comment_id=${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${this._token}`,
+                }
+        }).then(onResponse)
+}
 
-    //     }).onResponse()
+addComment(id, comment){
+    return fetch(`${this._url}/posts/comments/${id}`, {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${this._token}`,
+            'Content-Type': 'application/json',
+            },
 
-    // }
+        }).then(onResponse)
+
+    }
+
+    deleteComment(postId, commentId) {
+        return fetch(`${this._url}/comments/post?post_id=${postId}&comment_id=${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `${this._token}`,
+                'Content-Type': 'application/json',
+            },
+
+       }).then(onResponse)
+
+    }
 
     signUp(userData) {
         return fetch(`${this._url}/signup`, {

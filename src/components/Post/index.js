@@ -31,7 +31,7 @@ export const Post = ({ post }) => {
     const [favoriteCounter, setFavoriteCounter] = useState(likes.length)
 
     const dayjs = require('dayjs')
-    const dateParsedCreatedAt = dayjs(post['created_at']).format('DD-MM-YYYY HH:mm:ss')
+    const dateParsedCreatedAt = dayjs(post['created_at']).format('MMMM D, YYYY h:mm A')
 
     const showErrorMessage = () => {
         setModalState(() => {
