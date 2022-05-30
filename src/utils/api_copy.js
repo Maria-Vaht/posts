@@ -148,6 +148,16 @@ class Api {
         }).then(onResponse)
     }
 
+    saveImage(image, postId) {
+        return fetch(`${this._url}/saveImage/post?id=${postId}`, {
+            method: "POST",
+            headers: {
+                authorization: `${this._token}`,
+            },
+            body: image,
+        }).then(onResponse)
+    }
+
 }
 
 export default Api

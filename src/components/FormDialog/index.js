@@ -9,8 +9,9 @@ export const FormDialog = () => {
 
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
-    const [image, setImage] = useState('')
+    // const [image, setImage] = useState('')
     const [tags, setTags] = useState('')
+    var files = null
 
     const showErrorMessage = () => {
         setModalState(() => {
@@ -68,11 +69,17 @@ export const FormDialog = () => {
             } else {
                 api.createPost(title, text, image, tags)
                     .then((newPost) => setPostList(prevState => [newPost, ...prevState]))
+                    .then((newPost) => api.saveImage(files, newPost['_id']))
                     .then(() => handleClose())
                     .catch(showErrorMessage)
             }
         }
         cleanStates()
+    }
+
+    const handleImageUpload = event => {
+        files = event.target.files
+        console.log(files[0])
     }
 
     return (
@@ -97,11 +104,9 @@ export const FormDialog = () => {
                         fullWidth
                         variant="standard"
                         value={text}
-                        onChange={({ target }) => {
-                            setText(target.value);
-                        }}
+                        onChange={handleImageUpload}
                     />
-                    <TextField
+                    {/* <TextField
                         margin="dense"
                         label="Image"
                         fullWidth
@@ -110,7 +115,7 @@ export const FormDialog = () => {
                         onChange={({ target }) => {
                             setImage(target.value);
                         }}
-                    />
+                    /> */}
                     <TextField
                         margin="dense"
                         label="Tags"
@@ -120,6 +125,10 @@ export const FormDialog = () => {
                         onChange={({ target }) => {
                             setTags(target.value);
                         }}
+                    />
+                    <input onChange={handleImageUpload}
+                        type="file"
+                        label="Upload image"
                     />
                 </DialogContent>
                 <DialogActions>
