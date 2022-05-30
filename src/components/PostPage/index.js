@@ -62,26 +62,26 @@ export default function PostPage() {
     useEffect(() => {
         api.getPosts(params.postID)
             .then((data) => setPostItem(data))
-            .catch(showErrorMessage);
+            .catch(showErrorMessage)
+    }, []);
 
+    useEffect(() => {
         api.getComments(params.postID)
             .then((data) => setComments(data))
-            .catch(showErrorMessage);
-    }, [comments])
+            .catch(showErrorMessage)
+    }, []);
 
     const handleComment = (event) => {
         event.preventDefault();
         const {
             target: { comment },
         } = event;
-
-        api.addComment(postItem._id, { text: comment.value }).
-            then(() => api.getComments(params.postID)).
-            then((data) => setComments(data));
+        api.addComment(postItem._id, { commentText: comment.value })
+            .then(() => api.getComments(params.postID))
+            .then((data) => setComments(data));
         event.target.comment.value = '';
 
     };
-
 
     return (
         <Container>
@@ -97,9 +97,9 @@ export default function PostPage() {
                 />
                 <CardContent>
                     <Avatar alt="author" src={postItem?.author !== null && postItem?.author.avatar !== null ? postItem?.author.avatar : ''} />
-                    <Typography color="text.secondary">{dayjs(postItem?.created_at).format('MMMM D, YYYY')}</Typography>
+                    <Typography color="text.primary">{postItem?.author.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {postItem?.author.name}
+                        {dayjs(postItem?.created_at).format('MMMM D, YYYY')}
                     </Typography>
                     <Typography gutterBottom variant="h4" component="div" style={{ paddingTop: "20px", }}>
                         {postItem?.title}
@@ -146,6 +146,7 @@ export default function PostPage() {
                     <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
                         {comments?.map((comment) => (
                             <Comment comment={comment}
+                                setComments={setComments}
                                 key={comment._id}
                             />))}
                     </List>
