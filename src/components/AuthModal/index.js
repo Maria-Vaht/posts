@@ -15,6 +15,7 @@ export const AuthModal = () => {
     const [avatar, setAvatar] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const forbiddenChars = '!@#\$%^&*()-+=\\/<>,{}|[]?';
 
     const style = {
         position: 'absolute',
@@ -35,6 +36,12 @@ export const AuthModal = () => {
                 msg: 'Unexpected error occurred. Please try again later',
             };
         });
+    }
+
+    const validateName = (event) => {
+       if (forbiddenChars.includes(event.key)) {
+        event.preventDefault()
+       } 
     }
 
     const salt = 'P8SwsDcrSCg5d93Ei56RqJ13Afde9'
@@ -121,10 +128,10 @@ export const AuthModal = () => {
                 <Grid container spacing={2}>
                     {isTabSignUp ? <>
                         <Grid item xs={12}>
-                            <TextField fullWidth label='Name' variant='outlined' required value={name} onChange={({ target }) => setName(target.value)} />
+                            <TextField fullWidth label='Name' inputProps={{ maxLength: 20 }} variant='outlined' required value={name} onKeyDown={(event) => validateName(event)} onChange={({ target }) => setName(target.value)} />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField fullWidth label='About' variant='outlined' required value={about} onChange={({ target }) => setAbout(target.value)} />
+                            <TextField fullWidth label='About' inputProps={{ maxLength: 40 }} variant='outlined' required value={about} onChange={({ target }) => setAbout(target.value)} />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField fullWidth label='Avatar URL' variant='outlined' required value={avatar} onChange={({ target }) => setAvatar(target.value)} />
