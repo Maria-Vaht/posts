@@ -44,37 +44,42 @@ export const AuthModal = () => {
        } 
     }
 
+    const validateEmail = (email) => {
+        console.log(email)
+     }
+
     const salt = 'P8SwsDcrSCg5d93Ei56RqJ13Afde9'
     const hash = require('object-hash')
 
     const generateHash = (str) => hash(str)
 
-    const isEmpty = () => {
+    const isFormValid = () => {
         if (isTabSignUp) {
             if (!name) {
                 setSnackBarState({
                     isOpen: true, msg: 'Name can\'t be empty'
                 })
-                return true
+                return false
             }
+
         }
         if (!email) {
             setSnackBarState({
                 isOpen: true, msg: 'Email can\'t be empty'
             })
-            return true
+            return false
         } else if (!password) {
             setSnackBarState({
                 isOpen: true, msg: 'Password can\'t be empty'
             })
-            return true
-        } else {
             return false
+        } else {
+            return true
         }
     }
 
     const signUp = () => {
-        if (!isEmpty()) {
+        if (isFormValid()) {
             const emailPasswordSaltHash = generateHash(email.concat(password, salt))
             api.signUp({ name, about, avatar, email, emailPasswordSaltHash })
                 .then((res) => {
@@ -90,7 +95,7 @@ export const AuthModal = () => {
     }
 
     const signIn = () => {
-        if (!isEmpty()) {
+        if (isFormValid()) {
             const emailPasswordSaltHash = generateHash(email.concat(password, salt))
             api.signIn({ emailPasswordSaltHash })
                 .then((res) => {
@@ -138,7 +143,7 @@ export const AuthModal = () => {
                         </Grid>
                     </> : null}
                     <Grid item xs={12}>
-                        <TextField fullWidth label='Email' variant='outlined' required value={email} onChange={({ target }) => setEmail(target.value)} />
+                        <TextField fullWidth label='Email' variant='outlined' required value={email} onChange={({ target }) => setEmail(target.value)} onBlur={({ target }) => validateEmail(target.value)}/>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
