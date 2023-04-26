@@ -42,7 +42,8 @@ export const App = () => {
   const [comboBoxSelected, setComboBoxSelected] = useState('recent')
   const [isTabLiked, setIsTabLiked] = useState(false)
   const [isTabPostsCreated, setIsTabPostsCreated] = useState(false)
-  const [comments, setComments] = useState(null);
+  const [isTabSignUp, setIsTabSignUp] = useState(false)
+  const [isModal, setIsModal] = useState(false)
   const postsPerPage = 12
   const dayjs = require('dayjs')
 
@@ -69,7 +70,6 @@ export const App = () => {
 
   const [authModal, setAuthModal] = useState({
     isOpen: false,
-    msg: null,
   });
 
   const sortFunctions = {
@@ -82,28 +82,15 @@ export const App = () => {
   useEffect(() => {
     api.getCurrentUser()
       .then((user) => setCurrentUser(user))
-      .then(api.getPosts().then(posts => {
-        setPostList(posts)
-      }))
-      .catch(() => setModalState(() => {
-        return {
-          isOpen: true,
-          msg: "Need to login"
-        }
-      }))
-  }, []);
-
-  useEffect(() => {
-    const token = readLS('token');
-    if (!token) {
-      setAuthModal(() => {
-        return {
-          isOpen: true,
-          msg: "Need authorization",
-        }
+      .catch(() => {
+        setAuthModal(() => {
+          return {
+            isOpen: true,
+          }
+        })
+        setIsModal(true)
       })
-    }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (currentUser) {
@@ -112,8 +99,8 @@ export const App = () => {
         .catch(() => setModalState(() => {
           return {
             isOpen: true,
-            msg: "Unexpected error"
-          }
+            msg: 'Unexpected error occurred. Please try again later',
+          };
         }))
     }
   }, [comboBoxSelected, currentUser]);
@@ -161,25 +148,28 @@ export const App = () => {
         authModal,
         setAuthModal,
         sortFunctions,
-        setComments
+        isModal,
+        setIsModal,
+        isTabSignUp,
+        setIsTabSignUp,
       }}>
         <div className='appContainer'>
-          <Header>
-            <ComboBox />
-          </Header>
+          <Header />
           <Routes>
             <Route path="/"
               element={<>
-                <TabsPanel />
+                {isModal ?
+                  null : (
+                    <TabsPanel />
+                  )}
                 <ComboBox />
-
                 <PostList />
                 <Pagination />
               </>
               }
             />
             <Route path="post/:postID" element={<PostPage />} />
-            <Route path='currentUser/edit' element={<EditUser />} />
+            <Route path='current-user/edit' element={<EditUser />} />
           </Routes>
           <FormDialog />
           <ConfirmDialog />

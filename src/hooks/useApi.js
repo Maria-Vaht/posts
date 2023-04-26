@@ -2,12 +2,11 @@ import Api from "../utils/api_copy"
 import { useLocalStorage } from "./useLocalStorage";
 
 export const useApi = () => {
-    const {readLS} = useLocalStorage()
-    
+    const { readLS } = useLocalStorage()
 
     const config = {
-    url: 'https://api.react-learning.ru',
-    token: readLS("token")
+        url: 'https://mariavaht.pythonanywhere.com/api',
+        token: readLS("token")
     }
 
     return new Api(config);

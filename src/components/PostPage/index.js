@@ -15,7 +15,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import { IconButton, Input, TextField } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Container } from '@mui/material';
-import { Navigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Comment } from '../Comment';
 import { List } from '@mui/material';
@@ -24,7 +23,7 @@ import { useApi } from '../../hooks/useApi';
 
 
 export default function PostPage() {
-    
+
 
     const api = useApi()
     const { writeLS, removeLS } = useLocalStorage();
@@ -35,66 +34,59 @@ export default function PostPage() {
     const navigate = useNavigate()
     const [comments, setComments] = useState(null);
 
+    const showErrorMessage = () => {
+        setModalState(() => {
+            return {
+                isOpen: true,
+                msg: 'Unexpected error occurred. Please try again later',
+            };
+        });
+    }
+
     const addFavorite = () => {
         writeLS('favorites', postItem._id)
         setFavorites((prevState) => [...prevState, postItem._id])
         api.addLike(postItem._id)
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк поставлен'
-                })
-            })
-            .catch(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Не удалось поставить лайк'
-                })
-            });
+            .then(post => post)
+            .catch(showErrorMessage);
     }
 
     const removeFavorite = () => {
         removeLS('favorites', postItem._id)
         setFavorites((prevState) => prevState.filter((postId) => postId !== postItem._id))
         api.deleteLike(postItem._id)
-            .then(() => {
-                setSnackBarState({
-                    isOpen: true, msg: 'Лайк убран'
-                })
-                    .catch(() => {
-                        setSnackBarState({
-                            isOpen: true, msg: 'Не удалось убрать лайк'
-                        })
-                    })
-            })
+            .then(post => post)
+            .catch(showErrorMessage);
     }
 
     useEffect(() => {
         api.getPosts(params.postID)
             .then((data) => setPostItem(data))
-            .catch((err) => console.log('error'));
+            .catch(showErrorMessage)
+    }, []);
 
+    useEffect(() => {
         api.getComments(params.postID)
             .then((data) => setComments(data))
-            .catch((err) => console.log('error'))
-    }, [comments])
+            .catch(showErrorMessage)
+    }, []);
 
     const handleComment = (event) => {
         event.preventDefault();
         const {
-            target: {comment},
+            target: { comment },
         } = event;
-       
-       api.addComment(postItem._id, {text: comment.value}).
-       then(() => api.getComments(params.postID)).
-       then((data) => setComments(data));
-       event.target.comment.value = '';
-     
+        api.addComment(postItem._id, { commentText: comment.value })
+            .then(() => api.getComments(params.postID))
+            .then((data) => setComments(data));
+        event.target.comment.value = '';
+
     };
 
-
- return (
+    return (
         <Container>
             <div>
-                <Button className='buttonMUI' variant="contained" style={{ marginTop: '10px', marginLeft: "30%"}} onClick={() => navigate('/')} > Homepage </Button>
+                <Button className='buttonMUI' variant="contained" style={{ marginTop: '10px', marginLeft: "30%" }} onClick={() => navigate('/')} > Homepage </Button>
             </div>
             <Card sx={{ maxWidth: 500 }} style={{ marginTop: "20px", marginLeft: "30%", padding: "20px", position: "center", }}>
                 <CardMedia
@@ -105,9 +97,9 @@ export default function PostPage() {
                 />
                 <CardContent>
                     <Avatar alt="author" src={postItem?.author !== null && postItem?.author.avatar !== null ? postItem?.author.avatar : ''} />
-                    <Typography color="text.secondary">{dayjs(postItem?.created_at).format('MMMM D, YYYY')}</Typography>
+                    <Typography color="text.primary">{postItem?.author.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {postItem?.author.name}
+                        {dayjs(postItem?.created_at).format('MMMM D, YYYY')}
                     </Typography>
                     <Typography gutterBottom variant="h4" component="div" style={{ paddingTop: "20px", }}>
                         {postItem?.title}
@@ -154,14 +146,15 @@ export default function PostPage() {
                     <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
                         {comments?.map((comment) => (
                             <Comment comment={comment}
+                                setComments={setComments}
                                 key={comment._id}
                             />))}
                     </List>
                     <div>
                         <form onSubmit={handleComment}>
                             <TextField fullWidth label='Add a comment' name='comment' variant='outlined' />
-                            <Button className='buttonMUI' type='submit' variant='contained' style={{ marginBottom: '20px', marginRight: '15px', marginTop: '15px'}}>Send</Button>
-                           
+                            <Button className='buttonMUI' type='submit' variant='contained' style={{ marginBottom: '20px', marginRight: '15px', marginTop: '15px' }}>Send</Button>
+
                         </form>
                     </div>
                 </CardContent>

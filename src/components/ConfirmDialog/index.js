@@ -18,16 +18,21 @@ export const ConfirmDialog = () => {
     })
   }
 
-const deletePost = () => {
-  const api = useApi()
-  api.deletePostById(postId)
-    .then(() => setPostList(prevState => prevState.filter((post) => post._id !== postId)))
-    .catch(console.log("error"))
-    .finally(() => {
-      handleClose()
-      navigate('/')
-    })
-}
+  const deletePost = () => {
+    const api = useApi()
+    api.deletePostById(postId)
+      .then(() => setPostList(prevState => prevState.filter((post) => post._id !== postId)))
+      .catch(() => setModalState(() => {
+        return {
+          isOpen: true,
+          msg: 'Unexpected error occurred. Please try again later',
+        };
+      }))
+      .finally(() => {
+        handleClose()
+        navigate('/')
+      })
+  }
 
   return (
     <div>

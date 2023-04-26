@@ -5,12 +5,21 @@ import { useApi } from '../../hooks/useApi'
 
 export const FormDialog = () => {
     const api = useApi()
-    const { formDialogState: { postId, isOpen }, setFormDialogState, setPostList } = useContext(GlobalContext)
+    const { formDialogState: { postId, isOpen }, setFormDialogState, setSnackBarState, setPostList } = useContext(GlobalContext)
 
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
     const [image, setImage] = useState('')
     const [tags, setTags] = useState('')
+
+    const showErrorMessage = () => {
+        setModalState(() => {
+            return {
+                isOpen: true,
+                msg: 'Unexpected error occurred. Please try again later',
+            };
+        });
+    }
 
     useEffect(() => {
         if (postId) {
@@ -21,14 +30,16 @@ export const FormDialog = () => {
                     setImage(post?.image)
                     setTags(post?.tags.join(', '))
                 })
-                .catch(err => alert(err))
-        } else {
-            setTitle('')
-            setText('')
-            setImage('')
-            setTags('')
+                .catch(showErrorMessage);
         }
     }, [postId]);
+
+    const cleanStates = () => {
+        setTitle('')
+        setText('')
+        setImage('')
+        setTags('')
+    }
 
     const handleClose = () => {
         setFormDialogState(() => {
@@ -37,20 +48,32 @@ export const FormDialog = () => {
                 postId: null,
             }
         })
+        cleanStates()
     }
 
     const handleSubmit = () => {
-        if (postId) {
-            api.editPost(postId, title, text, image, tags)
-                .then(() => handleClose())
-                .catch(err => alert(err))
+        if (!title) {
+            setSnackBarState({
+                isOpen: true, msg: 'Title can\'t be empty'
+            })
+        } else if (!text) {
+            setSnackBarState({
+                isOpen: true, msg: 'Text can\'t be empty'
+            })
         } else {
-            api.createPost(title, text, image, tags)
-                .then((newPost) => setPostList(prevState => [newPost, ...prevState]))
-                .then(() => handleClose())
-                .catch(err => alert(err))
+            if (postId) {
+                api.editPost(postId, title, text, image, tags)
+                    .then(() => handleClose())
+                    .catch(showErrorMessage)
+            } else {
+                api.createPost(title, text, image, tags)
+                    .then((newPost) => setPostList(prevState => [newPost, ...prevState]))
+                    .then(() => handleClose())
+                    .catch(showErrorMessage)
+            }
         }
-    };
+        cleanStates()
+    }
 
     return (
         <div>

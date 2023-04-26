@@ -5,7 +5,7 @@ import style from './style.module.css'
 import GlobalContext from '../../contexts/globalContext'
 
 export const TabsPanel = () => {
-    const { setIsTabLiked, setIsTabPostsCreated } = useContext(GlobalContext)
+    const { setIsTabLiked, setIsTabPostsCreated, isModal, setIsTabSignUp } = useContext(GlobalContext)
 
     const [value, setValue] = React.useState(0);
 
@@ -40,24 +40,35 @@ export const TabsPanel = () => {
     };
 
     return (
-
-        <div className={style.tabsPanel}>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab onClick={() => {
-                    setIsTabLiked(false)
-                    setIsTabPostsCreated(false)
-                }}
-                    label="All posts" />
-                <Tab onClick={() => {
-                    setIsTabPostsCreated(true)
-                    setIsTabLiked(false)
-                }} label="Your posts" />
-                <Tab onClick={() => {
-                    setIsTabLiked(true)
-                    setIsTabPostsCreated(false)
-                }} label="You liked" />
-            </Tabs>
-        </div >
-
+        isModal ? (
+            <div className={style.tabsPanel}>
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab onClick={() => {
+                        setIsTabSignUp(false)
+                    }}
+                        label="Sign in" />
+                    <Tab onClick={() => {
+                        setIsTabSignUp(true)
+                    }}
+                        label="Sign up" />
+                </Tabs>
+            </div>) : (
+            <div className={style.tabsPanel}>
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab onClick={() => {
+                        setIsTabLiked(false)
+                        setIsTabPostsCreated(false)
+                    }}
+                        label="All posts" />
+                    <Tab onClick={() => {
+                        setIsTabPostsCreated(true)
+                        setIsTabLiked(false)
+                    }} label="Your posts" />
+                    <Tab onClick={() => {
+                        setIsTabLiked(true)
+                        setIsTabPostsCreated(false)
+                    }} label="You liked" />
+                </Tabs>
+            </div>)
     )
 }
