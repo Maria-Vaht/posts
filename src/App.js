@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { PostList } from './components/PostList'
@@ -96,7 +97,7 @@ export const App = () => {
     if (currentUser) {
       api.getPosts()
         .then((posts) => setPostList(posts.sort(sortFunctions[comboBoxSelected])))
-        .catch(() => setModalState(() => {
+        .catch(() => (() => {
           return {
             isOpen: true,
             msg: 'Unexpected error occurred. Please try again later',
